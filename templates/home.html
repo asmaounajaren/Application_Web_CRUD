@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+</head>
+<body>
+    <h1 class="text-center alert alert-warning">Python Flask CRUD Application</h1>
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Liste des utilisateurs</h2>
+        </div>
+
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <button class="btn btn-primary float-right" data-toggle="modal" data-target="#myModal">Ajouter</button>
+            
+            {%with messages = get_flashed_messages()%}
+            {%if messages%}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{message}}
+            </div>
+            {%endfor%}
+            {%endif%}
+            {%endwith%}
+        </div>
+                <!-- begin boite de dialog pour ajouter un utilisateur  -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" style="align-content: center;">Please Add New Student</h5>    
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{url_for('ajouter')}}" method="POST">
+                                    <div class="form-group">
+                                    <label>Nom</label>
+                                    <input type="text" name="nom" class="form-control" id="exampleFormControlInput1" placeholder="taper votre nom">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Prenom</label>
+                                        <input type="text" name="prenom" class="form-control" id="exampleFormControlInput1" placeholder="taper votre prenom">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" name="email" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mot de passe</label>
+                                        <input name="password" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Mot de passe">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mb-2">Ajouter</button>                        
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end boite de dialog pour ajouter un utilisateur  -->
+    <table class="table table-hover table-light">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">nom</th>
+                <th scope="col">prenom</th>
+                <th scope="col">email</th>
+                <th scope="col">Mot de passe</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+                <tr>
+                    <td>{{ item[0] }}</td>
+                    <td>{{ item[1] }}</td>
+                    <td>{{ item[2] }}</td>
+                    <td>{{ item[3] }}</td>
+                    <td>{{ item[4] }}</td>
+                    <td>
+                        <button class="btn btn-outline btn-success">Modifier</button>
+                        <button class="btn btn-outline btn-danger">Supprimer</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+</body>
+</html>
