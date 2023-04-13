@@ -34,6 +34,25 @@ def ajouter():
         mysql.connection.commit()
         return redirect(url_for('home_page'))
 
+@skills_app.route('/update', methods=['POST','GET'])
+def update():
+    if request.method == 'POST':
+        id_utilisateur = request.form['id_utilisateur']
+        nom=request.form['nom']
+        prenom=request.form['prenom']
+        email=request.form['email']
+        motdepasse=request.form['motdepasse']
+        cur = mysql.connection.cursor()
+        cur.execute("""
+        update utilisateur set nom=%s, prenom=%s,email=%s,motdepasse=%s
+        where id_utilisateur=%s
+        """,(nom,prenom,email,motdepasse,id_utilisateur))
+        flash("Bien modifié avec succès")
+        mysql.connection.commit()
+        return redirect(url_for('home_page'))
+
+
+
 @skills_app.route('/delete/<string:id_data>', methods = ['GET'])
 def delete(id_data):
     flash("Bien supprimé")

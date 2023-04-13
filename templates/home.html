@@ -79,10 +79,57 @@
                     <td>{{ item[3] }}</td>
                     <td>{{ item[4] }}</td>
                     <td>
-                        <a class="btn btn-outline btn-success text-white">Modifier</a>
+                        <a href="/update/{{item[0]}}"  class="btn btn-outline btn-success text-white" data-toggle="modal" data-target="#modaledit{{item.0}}">Modifier</a>
                         <a href="/delete/{{item[0]}}" onclick="return confirm('Est ce que vous etes sure de vouloir supprimer cette ligne ?')" class="btn btn-outline btn-danger text-white">Supprimer</a>
                     </td>
                 </tr>
+                        <!-- Enter Edit Student Modal -->
+        <div id="modaledit{{item.0}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary" style="align-content: center;">Modifier un utilisateur</h5>    
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        
+                        <form action="{{ url_for('update')}}" method="POST">
+                            <input type="hidden" name="id_utilisateur" value="{{item.0}}">
+
+                            <div class="form-group">
+                                <label>Nom</label>
+                                <input value="{{item.1}}" type="text" name="nom" class="form-control" id="exampleFormControlInput1" placeholder="taper votre nom">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Prenom</label>
+                                <input value="{{item.2}}" type="text" name="prenom" class="form-control" id="exampleFormControlInput1" placeholder="taper votre nom">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input value="{{item.3}}" type="text" name="email" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Email">
+                            </div>
+    
+                            <div class="form-group">
+                                <label>Mot de passe</label>
+                                <input  value="{{item.4}}" name="motdepasse" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Mot de passe">
+                            </div>
+    
+                            <button type="submit" class="btn btn-success mb-2">Modifier</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    
+    
+        <!-- End of Edit Student Modal -->
             {% endfor %}
         </tbody>
     </table>
