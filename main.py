@@ -28,6 +28,7 @@ def ajouter():
         prenom_=request.form['prenom']
         email_=request.form['email']
         motdepasse_=request.form['motdepasse']
+        # request.form.get("motdepasse", False)
         cur = mysql.connection.cursor()
         cur.execute("insert into utilisateur (nom,prenom,email,motdepasse) values(%s,%s,%s,%s)",(nom_,prenom_,email_,motdepasse_))
         mysql.connection.commit()

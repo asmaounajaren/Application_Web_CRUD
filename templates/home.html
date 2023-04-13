@@ -29,7 +29,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title text-primary" style="align-content: center;">Please Add New Student</h5>    
+                                <h5 class="modal-title text-primary" style="align-content: center;">Ajouter un nouveau utilisateur</h5>    
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Mot de passe</label>
-                                        <input name="password" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Mot de passe">
+                                        <input name="motdepasse" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Mot de passe">
                                     </div>
                                     <button type="submit" class="btn btn-primary mb-2">Ajouter</button>                        
                                 </form>
@@ -79,8 +79,8 @@
                     <td>{{ item[3] }}</td>
                     <td>{{ item[4] }}</td>
                     <td>
-                        <button class="btn btn-outline btn-success">Modifier</button>
-                        <button class="btn btn-outline btn-danger">Supprimer</button>
+                        <a class="btn btn-outline btn-success text-white">Modifier</a>
+                        <a href="/delete/{{item[0]}}" onclick="return confirm('Est ce que vous etes sure de vouloir supprimer cette ligne ?')" class="btn btn-outline btn-danger text-white">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}
