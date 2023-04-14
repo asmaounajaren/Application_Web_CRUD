@@ -65,5 +65,9 @@ def delete(id_data):
 def about_page():
     return render_template("about.html",username="about page")
 
+@skills_app.route("/register")
+def register_page():
+    return render_template("register.html")
+
 if __name__ == "__main__":
     skills_app.run(debug=True,port=5000)
