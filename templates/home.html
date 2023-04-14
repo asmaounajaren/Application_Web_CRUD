@@ -24,12 +24,12 @@
             {%endif%}
             {%endwith%}
         </div>
-                <!-- begin boite de dialog pour ajouter un utilisateur  -->
+                <!-- begin boite de dialogue pour ajouter un produit  -->
                 <div id="myModal" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title text-primary" style="align-content: center;">Ajouter un nouveau utilisateur</h5>    
+                                <h5 class="modal-title text-primary" style="align-content: center;">Ajouter un nouveau produit</h5>    
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
@@ -37,20 +37,20 @@
                             <div class="modal-body">
                                 <form action="{{url_for('ajouter')}}" method="POST">
                                     <div class="form-group">
-                                    <label>Nom</label>
-                                    <input type="text" name="nom" class="form-control" id="exampleFormControlInput1" placeholder="taper votre nom">
+                                    <label>Designation</label>
+                                    <input type="text" name="designation" class="form-control" id="exampleFormControlInput1" placeholder="designation de produit">
                                     </div>
                                     <div class="form-group">
-                                        <label>Prenom</label>
-                                        <input type="text" name="prenom" class="form-control" id="exampleFormControlInput1" placeholder="taper votre prenom">
+                                        <label>Description</label>
+                                        <input type="text" name="description" class="form-control" id="exampleFormControlInput1" placeholder="description de produit">
                                     </div>
                                     <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="text" name="email" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Email">
+                                        <label>Prix</label>
+                                        <input type="text" name="prix" class="form-control" id="exampleFormControlInput1" placeholder="le prix de produit">
                                     </div>
                                     <div class="form-group">
-                                        <label>Mot de passe</label>
-                                        <input name="motdepasse" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Mot de passe">
+                                        <label>Quantité en stock</label>
+                                        <input name="qteStock" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper la Quantité en stock">
                                     </div>
                                     <button type="submit" class="btn btn-primary mb-2">Ajouter</button>                        
                                 </form>
@@ -58,15 +58,15 @@
                         </div>
                     </div>
                 </div>
-                <!-- end boite de dialog pour ajouter un utilisateur  -->
+                <!-- end boite de dialog pour ajouter un produit  -->
     <table class="table table-hover table-light">
         <thead>
             <tr>
                 <th scope="col">id</th>
-                <th scope="col">nom</th>
-                <th scope="col">prenom</th>
-                <th scope="col">email</th>
-                <th scope="col">Mot de passe</th>
+                <th scope="col">Designation</th>
+                <th scope="col">Description</th>
+                <th scope="col">prix</th>
+                <th scope="col">Quantité en stock</th>
                 <th scope="col">Options</th>
             </tr>
         </thead>
@@ -83,13 +83,13 @@
                         <a href="/delete/{{item[0]}}" onclick="return confirm('Est ce que vous etes sure de vouloir supprimer cette ligne ?')" class="btn btn-outline btn-danger text-white">Supprimer</a>
                     </td>
                 </tr>
-                        <!-- Enter Edit Student Modal -->
+                        <!-- modifier un produit -->
         <div id="modaledit{{item.0}}" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 class="modal-title text-primary" style="align-content: center;">Modifier un utilisateur</h5>    
+                        <h5 class="modal-title text-primary" style="align-content: center;">Modifier un produit</h5>    
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -98,26 +98,26 @@
                     <div class="modal-body">
                         
                         <form action="{{ url_for('update')}}" method="POST">
-                            <input type="hidden" name="id_utilisateur" value="{{item.0}}">
+                            <input type="hidden" name="id_produit" value="{{item.0}}">
 
                             <div class="form-group">
-                                <label>Nom</label>
-                                <input value="{{item.1}}" type="text" name="nom" class="form-control" id="exampleFormControlInput1" placeholder="taper votre nom">
+                                <label>Designation </label>
+                                <input value="{{item.1}}" type="text" name="designation" class="form-control" id="exampleFormControlInput1" placeholder="designation de produit">
                             </div>
 
                             <div class="form-group">
-                                <label>Prenom</label>
-                                <input value="{{item.2}}" type="text" name="prenom" class="form-control" id="exampleFormControlInput1" placeholder="taper votre nom">
+                                <label>Description</label>
+                                <input value="{{item.2}}" type="text" name="description" class="form-control" id="exampleFormControlInput1" placeholder="description de produit">
                             </div>
                             
                             <div class="form-group">
-                                <label>Email</label>
-                                <input value="{{item.3}}" type="text" name="email" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Email">
+                                <label>Prix</label>
+                                <input value="{{item.3}}" type="text" name="prix" class="form-control" id="exampleFormControlInput1" placeholder="le prix de produit">
                             </div>
     
                             <div class="form-group">
-                                <label>Mot de passe</label>
-                                <input  value="{{item.4}}" name="motdepasse" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper votre Mot de passe">
+                                <label>Quantité en stock</label>
+                                <input  value="{{item.4}}" name="qteStock" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper la Quantité en stock">
                             </div>
     
                             <button type="submit" class="btn btn-success mb-2">Modifier</button>
@@ -129,7 +129,7 @@
         </div>
     
     
-        <!-- End of Edit Student Modal -->
+        <!-- End of Edit Product -->
             {% endfor %}
         </tbody>
     </table>

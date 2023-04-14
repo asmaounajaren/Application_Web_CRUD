@@ -15,7 +15,7 @@ mysql = MySQL(skills_app)
 @skills_app.route("/")
 def home_page():
     cur = mysql.connection.cursor()
-    cur.execute("select * from utilisateur")
+    cur.execute("select * from produit")
     fetchdata=cur.fetchall()
     cur.close()
     return render_template("home.html",data=fetchdata)
@@ -24,29 +24,29 @@ def home_page():
 def ajouter():
     if request.method == 'POST':
         flash("bien ajouté avec succès")
-        nom_=request.form['nom']
-        prenom_=request.form['prenom']
-        email_=request.form['email']
-        motdepasse_=request.form['motdepasse']
-        # request.form.get("motdepasse", False)
+        designation=request.form['designation']
+        description=request.form['description']
+        prix=request.form['prix']
+        qteStock=request.form['qteStock']
+        # request.form.get("qteStock", False)
         cur = mysql.connection.cursor()
-        cur.execute("insert into utilisateur (nom,prenom,email,motdepasse) values(%s,%s,%s,%s)",(nom_,prenom_,email_,motdepasse_))
+        cur.execute("INSERT INTO produit (designation, description, prix, qteStock) values(%s,%s,%s,%s)",(designation,description,prix,qteStock))
         mysql.connection.commit()
         return redirect(url_for('home_page'))
 
 @skills_app.route('/update', methods=['POST','GET'])
 def update():
     if request.method == 'POST':
-        id_utilisateur = request.form['id_utilisateur']
-        nom=request.form['nom']
-        prenom=request.form['prenom']
-        email=request.form['email']
-        motdepasse=request.form['motdepasse']
+        id_produit = request.form['id_produit']
+        designation=request.form['designation']
+        description=request.form['description']
+        prix=request.form['prix']
+        qteStock=request.form['qteStock']
         cur = mysql.connection.cursor()
         cur.execute("""
-        update utilisateur set nom=%s, prenom=%s,email=%s,motdepasse=%s
-        where id_utilisateur=%s
-        """,(nom,prenom,email,motdepasse,id_utilisateur))
+        update produit set designation=%s, description=%s,prix=%s,qteStock=%s
+        where id_produit=%s
+        """,(designation,description,prix,qteStock,id_produit))
         flash("Bien modifié avec succès")
         mysql.connection.commit()
         return redirect(url_for('home_page'))
@@ -57,7 +57,7 @@ def update():
 def delete(id_data):
     flash("Bien supprimé")
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM utilisateur WHERE id_utilisateur=%s", (id_data,))
+    cur.execute("DELETE FROM produit WHERE id_produit=%s", (id_data,))
     mysql.connection.commit()
     return redirect(url_for('home_page'))
 
