@@ -1,6 +1,7 @@
 from flask import Flask, render_template, flash,url_for,request,session
 from werkzeug.utils import redirect
 from flask_mysqldb import MySQL
+import re
 # from authentification import auth
 
 skills_app =Flask(__name__)
@@ -82,16 +83,38 @@ def login_page():
 @skills_app.route('/register',methods= ['GET','POST'])
 def register():
     if request.method == 'POST':
-        flash("bien ajouté avec succès")
+        
         nom_=request.form['nom']
         prenom_=request.form['prenom']
         email_=request.form['email']
         motdepasse_=request.form['motdepasse']
         # request.form.get("motdepasse", False)
-        cur = mysql.connection.cursor()
-        cur.execute("insert into utilisateur (nom,prenom,email,motdepasse) values(%s,%s,%s,%s)",(nom_,prenom_,email_,motdepasse_))
-        mysql.connection.commit()
-        return redirect(url_for('home_page'))
+
+        if len(nom_)==0 or len(prenom_)==0 or len(email_)==0 or len(motdepasse_)==0:
+            flash('Veuillez remplir tous les champs !')
+            return redirect(url_for('register_page'))    
+        elif len(nom_)<2:
+            flash('le nom doit contenir au moins 2 caractere !')
+            return redirect(url_for('register_page'))
+
+        elif len(prenom_)<2:
+            flash('le prenom doit contenir au moins 2 caractere !')
+            return redirect(url_for('register_page'))
+        
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email_):
+            flash('Email adresse Invalide !')
+            return redirect(url_for('register_page'))
+        #or not re.match(r'^[A-Z\d]$',motdepasse_)
+        elif len(motdepasse_)<3 :
+            flash('le mot de passe doit contenir au moins un caractere maj et un nombre !')
+            return redirect(url_for('register_page'))
+
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute("insert into utilisateur (nom,prenom,email,motdepasse) values(%s,%s,%s,%s)",(nom_,prenom_,email_,motdepasse_))
+            mysql.connection.commit()
+            flash("bien ajouté avec succès")
+            return redirect(url_for('home_page'))
     
 @skills_app.route('/login', methods=['GET','POST'])
 def login():

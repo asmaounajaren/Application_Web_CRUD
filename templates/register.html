@@ -2,6 +2,18 @@
 {% block body %}
 <form class="h-100 bg-dark" action="{{url_for('register')}}" method="post">
     <div class="container py-5 h-100">
+      {%with messages = get_flashed_messages()%}
+    {%if messages%}
+    {% for message in messages %}
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{message}}
+    </div>
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
       <div class="row d-flex ">
         <div class="col">
           <div class="card card-registration my-4">
