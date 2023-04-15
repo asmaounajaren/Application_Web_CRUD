@@ -21,11 +21,18 @@ mysql = MySQL(skills_app)
 
 @skills_app.route("/")
 def home_page():
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('home.html', username=session['nom'])
+    return render_template("login.html")
+
+@skills_app.route("/products")
+def products_page():
     cur = mysql.connection.cursor()
     cur.execute("select * from produit")
     fetchdata=cur.fetchall()
     cur.close()
-    return render_template("home.html",data=fetchdata)
+    return render_template("products.html",data=fetchdata)
 
 @skills_app.route('/ajouter',methods= ['POST'])
 def ajouter():
@@ -39,7 +46,7 @@ def ajouter():
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO produit (designation, description, prix, qteStock) values(%s,%s,%s,%s)",(designation,description,prix,qteStock))
         mysql.connection.commit()
-        return redirect(url_for('home_page'))
+        return redirect(url_for('products_page'))
 
 @skills_app.route('/update', methods=['POST','GET'])
 def update():
@@ -56,7 +63,7 @@ def update():
         """,(designation,description,prix,qteStock,id_produit))
         flash("Bien modifié avec succès")
         mysql.connection.commit()
-        return redirect(url_for('home_page'))
+        return redirect(url_for('products_page'))
 
 
 
@@ -66,7 +73,7 @@ def delete(id_data):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM produit WHERE id_produit=%s", (id_data,))
     mysql.connection.commit()
-    return redirect(url_for('home_page'))
+    return redirect(url_for('products_page'))
 
 @skills_app.route("/about")
 def about_page():
@@ -79,6 +86,11 @@ def register_page():
 @skills_app.route("/login")
 def login_page():
     return render_template("login.html")
+
+# @skills_app.route("/profile")
+# def profile_page():
+#     return render_template("profile.html")
+
 
 @skills_app.route('/register',methods= ['GET','POST'])
 def register():
@@ -140,5 +152,19 @@ def login():
             # Account doesnt exist or username/password incorrect
             flash('email ou mot de passe est incorrect !')
             return redirect(url_for('login_page'))
+
+# http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
+@skills_app.route("/profile")
+def profile():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # We need all the account info for the user so we can display it on the profile page
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM utilisateur WHERE id_utilisateur = %s', (session['id'],))
+        user = cursor.fetchone()
+        # Show the profile page with account info
+        return render_template('profile.html', user=user)
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
 if __name__ == "__main__":
     skills_app.run(debug=True,port=5000)

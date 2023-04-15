@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block body %}
+    <h1 class="text-center alert alert-warning">Python Flask CRUD Application</h1>
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Liste des utilisateurs</h2>
+        </div>
+
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <button class="btn btn-primary float-right" data-toggle="modal" data-target="#myModal">Ajouter</button>
+            
+            {%with messages = get_flashed_messages()%}
+            {%if messages%}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{message}}
+            </div>
+            {%endfor%}
+            {%endif%}
+            {%endwith%}
+        </div>
+                <!-- begin boite de dialogue pour ajouter un produit  -->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-primary" style="align-content: center;">Ajouter un nouveau produit</h5>    
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{url_for('ajouter')}}" method="POST">
+                                    <div class="form-group">
+                                    <label>Designation</label>
+                                    <input type="text" name="designation" class="form-control" id="exampleFormControlInput1" placeholder="designation de produit">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <input type="text" name="description" class="form-control" id="exampleFormControlInput1" placeholder="description de produit">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Prix</label>
+                                        <input type="text" name="prix" class="form-control" id="exampleFormControlInput1" placeholder="le prix de produit">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Quantité en stock</label>
+                                        <input name="qteStock" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper la Quantité en stock">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mb-2">Ajouter</button>                        
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end boite de dialog pour ajouter un produit  -->
+    <table class="table table-hover table-light">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Designation</th>
+                <th scope="col">Description</th>
+                <th scope="col">prix</th>
+                <th scope="col">Quantité en stock</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+                <tr>
+                    <td>{{ item[0] }}</td>
+                    <td>{{ item[1] }}</td>
+                    <td>{{ item[2] }}</td>
+                    <td>{{ item[3] }}</td>
+                    <td>{{ item[4] }}</td>
+                    <td>
+                        <a href="/update/{{item[0]}}"  class="btn btn-outline btn-success text-white" data-toggle="modal" data-target="#modaledit{{item.0}}">Modifier</a>
+                        <a href="/delete/{{item[0]}}" onclick="return confirm('Est ce que vous etes sure de vouloir supprimer cette ligne ?')" class="btn btn-outline btn-danger text-white">Supprimer</a>
+                    </td>
+                </tr>
+                        <!-- modifier un produit -->
+        <div id="modaledit{{item.0}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary" style="align-content: center;">Modifier un produit</h5>    
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        
+                        <form action="{{ url_for('update')}}" method="POST">
+                            <input type="hidden" name="id_produit" value="{{item.0}}">
+
+                            <div class="form-group">
+                                <label>Designation </label>
+                                <input value="{{item.1}}" type="text" name="designation" class="form-control" id="exampleFormControlInput1" placeholder="designation de produit">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input value="{{item.2}}" type="text" name="description" class="form-control" id="exampleFormControlInput1" placeholder="description de produit">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Prix</label>
+                                <input value="{{item.3}}" type="text" name="prix" class="form-control" id="exampleFormControlInput1" placeholder="le prix de produit">
+                            </div>
+    
+                            <div class="form-group">
+                                <label>Quantité en stock</label>
+                                <input  value="{{item.4}}" name="qteStock" type="text" class="form-control" id="exampleFormControlInput1" placeholder="taper la Quantité en stock">
+                            </div>
+    
+                            <button type="submit" class="btn btn-success mb-2">Modifier</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    
+    
+        <!-- End of Edit Product -->
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

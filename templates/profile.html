@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+<h2>Profile Page</h2>
+<div>
+    <p>Your account details are below:</p>
+    <table>
+        <tr>
+            <td>Nom:</td>
+            <td>{{ user[1] }}</td>
+        </tr>
+        <tr>
+            <td>Prenom:</td>
+            <td>{{ user[2] }}</td>
+        </tr>        
+        <tr>
+            <td>Email:</td>
+            <td>{{ user[3] }}</td>
+        </tr>        
+        <tr>
+            <td>Mot de passe:</td>
+            <td>{{ user[4] }}</td>
+        </tr>
+
+    </table>
+    
+</div>
+{% endblock %}
