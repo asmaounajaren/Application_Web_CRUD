@@ -1,47 +1,46 @@
-# from flask import Blueprint, render_template, flash,url_for,request
-# from werkzeug.utils import redirect
-# from flask_mysqldb import MySQL
-# auth =Blueprint("authentification",__name__)
-# auth.secret_key = 'many random bytes'
+from database import MySQL
+from flask import Blueprint, render_template,flash,request,url_for
+import re
+from werkzeug.utils import redirect
 
-# auth.config['MYSQL_HOST'] = 'localhost'
-# auth.config['MYSQL_USER'] = 'root'
-# auth.config['MYSQL_PASSWORD'] = ''
-# auth.config['MYSQL_DB'] = 'gestioncommande'
-# mysql = MySQL(auth)
-# @auth.route('/register',methods= ['GET','POST'])
-# def register():
-#     if request.method == 'POST':
-#         flash("bien ajouté avec succès")
-#         nom_=request.form['nom']
-#         prenom_=request.form['prenom']
-#         email_=request.form['email']
-#         motdepasse_=request.form['motdepasse']
-#         # request.form.get("motdepasse", False)
-#         cur = mysql.connection.cursor()
-#         cur.execute("insert into utilisateur (nom,prenom,email,motdepasse) values(%s,%s,%s,%s)",(nom_,prenom_,email_,motdepasse_))
-#         mysql.connection.commit()
-#         return redirect(url_for('home_page'))
-    
-# @auth.route('/login', methods=['GET','POST'])
-# def login():
-#     if request.method=='POST':
-#         email=request.form('email')
-#         motdepasse=request.form('motdepasse')
-#          # Check if account exists using MySQL
-#         cursor = mysql.connection.cursor()
-#         cursor.execute('SELECT * FROM utilisateur WHERE email = %s AND motdepasse = %s', (email, motdepasse,))
-#         # Fetch one record and return result
-#         user = cursor.fetchone()
-#                 # If account exists in accounts table in out database
-#         if user:
-#             # Create session data, we can access this data in other routes
-#             session['loggedin'] = True
-#             session['id'] = user['id']
-#             session['username'] = user['username']
-#             # Redirect to home page
-#             return redirect(url_for('home_page'))
-#         else:
-#             # Account doesnt exist or username/password incorrect
-#             flash('Incorrecte email / mot de passe!')
-#             return redirect(url_for('register_page'))
+auth = Blueprint('authentification', __name__)
+
+@auth.route("/register")
+def register_page():
+    return render_template("register.html")
+
+@auth.route('/register',methods= ['GET','POST'])
+def register():
+    if request.method == 'POST':
+        
+        nom_=request.form['nom']
+        prenom_=request.form['prenom']
+        email_=request.form['email']
+        motdepasse_=request.form['motdepasse']
+        # request.form.get("motdepasse", False)
+
+        if len(nom_)==0 or len(prenom_)==0 or len(email_)==0 or len(motdepasse_)==0:
+            flash('Veuillez remplir tous les champs !')
+            return redirect(url_for('register_page'))    
+        elif len(nom_)<2:
+            flash('le nom doit contenir au moins 2 caractere !')
+            return redirect(url_for('register_page'))
+
+        elif len(prenom_)<2:
+            flash('le prenom doit contenir au moins 2 caractere !')
+            return redirect(url_for('register_page'))
+        
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email_):
+            flash('Email adresse Invalide !')
+            return redirect(url_for('register_page'))
+        #or not re.match(r'^[A-Z\d]$',motdepasse_)
+        elif len(motdepasse_)<3 :
+            flash('le mot de passe doit contenir au moins un caractere maj et un nombre !')
+            return redirect(url_for('register_page'))
+
+        else:
+            cur = MySQL.connection.cursor()
+            cur.execute("insert into utilisateur (nom,prenom,email,motdepasse) values(%s,%s,%s,%s)",(nom_,prenom_,email_,motdepasse_))
+            MySQL.connection.commit()
+            flash("bien ajouté avec succès")
+            return redirect(url_for('home_page'))
