@@ -23,16 +23,17 @@ def register():
             flash('Veuillez remplir tous les champs !')
             return redirect(url_for('register_page'))    
         elif len(nom_)<2:
-            flash('le nom doit contenir au moins 2 caractere !')
+            flash('le nom doit contenir au moins 2 caracteres !')
             return redirect(url_for('register_page'))
 
         elif len(prenom_)<2:
-            flash('le prenom doit contenir au moins 2 caractere !')
+            flash('le prenom doit contenir au moins 2 caracteres !')
             return redirect(url_for('register_page'))
         
         elif not re.match(r'[^@]+@[^@]+\.[^@]+', email_):
             flash('Email adresse Invalide !')
             return redirect(url_for('register_page'))
+        
         #or not re.match(r'^[A-Z\d]$',motdepasse_)
         elif len(motdepasse_)<3 :
             flash('le mot de passe doit contenir au moins un caractere maj et un nombre !')

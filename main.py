@@ -32,11 +32,14 @@ def home_page():
 
 @skills_app.route("/products")
 def products_page():
-    cur = mysql.connection.cursor()
-    cur.execute("select * from produit")
-    fetchdata=cur.fetchall()
-    cur.close()
-    return render_template("products.html",data=fetchdata)
+    if 'loggedin' in session:
+        cur = mysql.connection.cursor()
+        cur.execute("select * from produit")
+        fetchdata=cur.fetchall()
+        cur.close()
+        return render_template("products.html",data=fetchdata)
+    return render_template("login.html")
+
 
 @skills_app.route('/ajouter',methods= ['POST'])
 def ajouter():
@@ -81,7 +84,10 @@ def delete(id_data):
 
 @skills_app.route("/about")
 def about_page():
-    return render_template("about.html",username="about page")
+    if 'loggedin' in session:
+        return render_template("about.html",username="about page")
+    return render_template("login.html")
+
 
 # @skills_app.route("/register")
 # def register_page():
@@ -96,7 +102,7 @@ def login():
     if request.method=='POST':
         email=request.form['email']
         motdepasse=request.form['motdepasse']
-         # Check if account exists using MySQL
+        # Check if account exists using MySQL
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT * FROM utilisateur WHERE email = %s AND motdepasse = %s', (email, motdepasse,))
         # Fetch one record and return result
@@ -115,6 +121,12 @@ def login():
             # Account doesnt exist or username/password incorrect
             flash('email ou mot de passe est incorrect !')
             return redirect(url_for('login_page'))
+@skills_app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('nom',None)
+    return redirect(url_for('login'))
+
 
 # http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
 @skills_app.route("/profile")
