@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 <form class="container" action="{{url_for('login')}}" method="post">
+
     {%with messages = get_flashed_messages()%}
     {%if messages%}
     {% for message in messages %}

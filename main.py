@@ -4,17 +4,17 @@ from flask_mysqldb import MySQL
 # from database import MySQL
 import re
 from authentification import auth
-
-
+from form import loginForm
+import os
 skills_app =Flask(__name__)
-skills_app.secret_key = 'many random bytes'
+skills_app.secret_key = os.urandom(32)
 # skills_app.register_blueprint(auth,url_prefix="")
 
 skills_app.register_blueprint(auth)
 
-skills_app.config['MYSQL_HOST'] = 'localhost'
-skills_app.config['MYSQL_USER'] = 'root'
-skills_app.config['MYSQL_PASSWORD'] = ''
+skills_app.config['MYSQL_HOST'] = 'flaskdb1.caa3epyonmig.eu-north-1.rds.amazonaws.com'
+skills_app.config['MYSQL_USER'] = 'admin'
+skills_app.config['MYSQL_PASSWORD'] = 'admin1234'
 skills_app.config['MYSQL_DB'] = 'gestioncommande'
 
 skills_app.config["SESSION_PERMANENT"] = False
@@ -99,6 +99,7 @@ def login_page():
 
 @skills_app.route('/login', methods=['GET','POST'])
 def login():
+    log= loginForm()
     if request.method=='POST':
         email=request.form['email']
         motdepasse=request.form['motdepasse']
@@ -120,7 +121,7 @@ def login():
         else:
             # Account doesnt exist or username/password incorrect
             flash('email ou mot de passe est incorrect !')
-            return redirect(url_for('login_page'))
+    return render_template('login.html')
 @skills_app.route('/logout')
 def logout():
     session.pop('loggedin', None)
