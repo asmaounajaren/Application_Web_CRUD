@@ -143,4 +143,4 @@ def profile():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 if __name__ == "__main__":
-    skills_app.run(host='0.0.0.0',debug=True,port=5000)
+    skills_app.run(host='0.0.0.0',debug=True,port=8000)
