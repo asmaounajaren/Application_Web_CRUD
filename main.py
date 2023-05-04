@@ -6,6 +6,7 @@ import re
 from authentification import auth
 from form import loginForm
 import os
+
 skills_app =Flask(__name__)
 skills_app.secret_key = os.urandom(32)
 # skills_app.register_blueprint(auth,url_prefix="")
